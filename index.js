@@ -52,9 +52,12 @@ const koderSchema = new mongoose.Schema({
 const Koders = mongoose.model("koders", koderSchema)
 
 // Endpoints
-app.get("/koders", (request, response) => {
+app.get("/koders", async (request, response) => {
 
   // Vamos a utilizar el modelo para acceder a nuestra bd.
+  const koders = await Koders.find({}) // Promesa
+  console.log("koders", koders)
+
   response.json({
     "message": "El endpoint koders funciona"
   })
