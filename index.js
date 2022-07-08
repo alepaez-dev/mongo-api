@@ -1,4 +1,5 @@
 const express = require("express");
+const res = require("express/lib/response");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -53,14 +54,23 @@ const Koders = mongoose.model("koders", koderSchema)
 
 // Endpoints
 app.get("/koders", async (request, response) => {
-
-  // Vamos a utilizar el modelo para acceder a nuestra bd.
-  const koders = await Koders.find({}) // Promesa
-  console.log("koders", koders)
-
-  response.json({
-    "message": "El endpoint koders funciona"
-  })
+  try {
+    // Lo que puede fallar aqui
+    const koders = await Koders.find({}) // Promesa
+    response.json({
+      success: true,
+      data: {
+        koders
+      } 
+    })
+  } catch(error) {
+    // Fallo
+    response.status(400) // 400
+    response.json({
+      success: false,
+      error
+    })
+  }
 })
 
 // Conectando con la base de datos de Mongo
