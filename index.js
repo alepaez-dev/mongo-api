@@ -52,11 +52,39 @@ const koderSchema = new mongoose.Schema({
 // Modelos
 const Koders = mongoose.model("koders", koderSchema)
 
+
 // Endpoints
 app.get("/koders", async (request, response) => {
+  // Query params
+  const { name, modulo } = request.query
+
   try {
-    // Lo que puede fallar aqui
-    const koders = await Koders.find({}) // Promesa
+    // Lo que puede fallar aqui, hay que intentar
+
+    /**
+     * 
+     * 5000
+     * 
+     * 50 koders
+     * 50 -> 100
+     * 50 -> 150
+     * 
+     * Paginacion
+     * 
+     * recibiriamos -> queryparam = page
+     * 
+     * totalKoders = 5000,
+     * page: 5,
+     * koders: [
+     *  ....
+     * ]
+     * hasNextPage: yes
+     * nextPage: 6
+     * hasBeforePage: true
+     */
+
+
+    const koders = await Koders.find({ name: name, modulo: modulo }) // Promesa
     response.json({
       success: true,
       data: {
@@ -73,6 +101,34 @@ app.get("/koders", async (request, response) => {
   }
 })
 
+// Los identificadores van de path param
+app.get("/koders/:identificador", async (request, response) => {
+  // Destructuracion
+  try {
+    const { identificador } = request.params
+    const koder = await Koders.findById(identificador, "edad" )
+    response.json({
+      success:true,
+      data: {
+        koder
+      }
+    })
+  } catch(error) {
+    // El error es un objeto
+    response.status(404) // no se encontro 
+    response.json({
+      success: false,
+      message: error.message
+    })
+  }
+})
+
+
+/**
+ * Endpoint -> patch
+ * Actualizar un koder
+ * Validen errores
+ */
 // Conectando con la base de datos de Mongo
 mongoose.connect("mongodb+srv://ale:kodemia123@kodemia.qwmlbhw.mongodb.net/kodemia") // Promesa
 .then(() => {
