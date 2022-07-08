@@ -82,7 +82,6 @@ app.get("/koders", async (request, response) => {
      * hasBeforePage: true
      */
 
-
     const koders = await Koders.find({ name: name, modulo: modulo }) // Promesa
     response.json({
       success: true,
@@ -123,15 +122,19 @@ app.get("/koders/:identificador", async (request, response) => {
 })
 
 
+// Rest -> Arquitectura que se sigue
+// Restful -> Eso es restful -> que esta siguiendo la arquitectura rest 
+// 1 -> , comunicaciones Hyper JSON
+// 2 -> /recurso/identificador -> /koders/id
+// 3 -> Tenias que seguir un protocolo de comunicacion que no tuviera estado -> HTTP
+// Rest API -> /recurso/identificador/
 app.post("/koders", async (request, response) => {
-
   // Post, ruta
   // Modelo -> Schema
   // El id se genera en automatico
   // request.body
   try {
     const koder = await Koders.create(request.body)
-    console.log("koder", koder)
     response.status(201)
     response.json({
       data: {
@@ -147,6 +150,19 @@ app.post("/koders", async (request, response) => {
   }
 })
 
+/**
+ * Endpoint Delete
+ */
+
+
+// ruta
+// methodo
+// que quieren
+
+
+// Tengo una empresa de mudanza y necesito una sistema
+// -> Go 
+// ->
 // Post -> Create
 // Delete -> 
 
