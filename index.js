@@ -1,5 +1,4 @@
 const express = require("express");
-const res = require("express/lib/response");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -123,6 +122,33 @@ app.get("/koders/:identificador", async (request, response) => {
   }
 })
 
+
+app.post("/koders", async (request, response) => {
+
+  // Post, ruta
+  // Modelo -> Schema
+  // El id se genera en automatico
+  // request.body
+  try {
+    const koder = await Koders.create(request.body)
+    console.log("koder", koder)
+    response.status(201)
+    response.json({
+      data: {
+        koder
+      }
+    })
+  }catch(error){
+    response.status(400)
+    response.json({
+      success: false,
+      message: error.message
+    })
+  }
+})
+
+// Post -> Create
+// Delete -> 
 
 /**
  * Endpoint -> patch
