@@ -150,6 +150,28 @@ app.post("/koders", async (request, response) => {
   }
 })
 
+// Delete
+app.delete("/koders/:id", async (request, response) => {
+  const { id } = request.params
+
+  try {
+   const koder = await Koders.findByIdAndDelete(id)
+   console.log("koder", koder)
+   response.json({
+     success: true,
+     message: "El koder fue eliminado"
+   })
+
+  }catch(error) {
+   response.status(404) // Koder not found
+   response.json({
+     success: false,
+     message: error.message
+   })
+ }
+})
+
+
 /**
  * Endpoint Delete
  */
