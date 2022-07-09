@@ -2,7 +2,31 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
+
+// Middleware
+
+//app.use(middleware)
 app.use(express.json()) // Vamos a utilizar Json
+
+// Middlewares
+// synchronos
+// next -> FUNCTION()
+// next -> indicar que puedes seguir
+// Sirven para casos de uso que se tiene que hacer antes de llegar a su punto final
+
+// Middlware 1
+app.use((request, response, next) => {
+  console.log("estoy en mi MIDDLWARE", request.body)
+  request.body["created_at"] = new Date()
+  next()
+})
+
+// Middleware 2
+app.use((request, response, next) => {
+  console.log("estoy en mi middleware 222222", request.body)
+  next()
+})
+
 
 
 // Endpoints
@@ -11,6 +35,12 @@ app.get("/", (request, response) => {
     "message": "Endpoint de HOME"
   })
 })
+
+// Middlewares
+/*
+ Middle -> entre
+ Ware -> ware
+*/
 
 
 // URI mongo al darle conectar a application 
@@ -54,6 +84,7 @@ const Koders = mongoose.model("koders", koderSchema)
 
 // Endpoints
 app.get("/koders", async (request, response) => {
+  console.log("ya estamos en endpoint koders")
   // Query params
   const { name, modulo } = request.query
 
@@ -129,7 +160,7 @@ app.get("/koders/:identificador", async (request, response) => {
 // 3 -> Tenias que seguir un protocolo de comunicacion que no tuviera estado -> HTTP
 // Rest API -> /recurso/identificador/
 app.post("/koders", async (request, response) => {
-  // Post, ruta
+  console.log("ESTOy en mi endpoint de POST KODER", request.body)
   // Modelo -> Schema
   // El id se genera en automatico
   // request.body
