@@ -17,7 +17,7 @@ app.use(express.json()) // Vamos a utilizar Json
 // Middlware 1
 app.use((request, response, next) => {
   console.log("estoy en mi MIDDLWARE", request.body)
-  request.body["created_at"] = new Date()
+  request.body["created_at"] = new Date() // aqui lo modifique
   next()
 })
 
@@ -27,7 +27,11 @@ app.use((request, response, next) => {
   next()
 })
 
-
+// Middleware encapsulado
+const middlewareRutaEncapsulado = (request, response, next) => {
+  console.log("esto es una arrow funcion")
+  next()
+}
 
 // Endpoints
 app.get("/", (request, response) => {
@@ -81,9 +85,11 @@ const koderSchema = new mongoose.Schema({
 // Modelos
 const Koders = mongoose.model("koders", koderSchema)
 
-
+// 1 - Ruta
+// 2 - callback -> request, response, que nos da un response
+// 3
 // Endpoints
-app.get("/koders", async (request, response) => {
+app.get("/koders", middlewareRutaEncapsulado, async (request, response) => {
   console.log("ya estamos en endpoint koders")
   // Query params
   const { name, modulo } = request.query
